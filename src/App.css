@@ -1,0 +1,33 @@
+.app {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+.kanban-board {
+  display: flex;
+  justify-content: space-between;
+}
+
+.kanban-column {
+  flex: 1;
+  margin: 10px;
+}
+
+.kanban-column h2 {
+  background-color: #f0f0f0;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 2px solid #ddd;
+}
+
+.group-selector {
+  margin-bottom: 20px;
+}
+
+.group-selector label {
+  margin-right: 10px;
+}
+
+.group-selector select {
+  margin-right: 20px;
+}
