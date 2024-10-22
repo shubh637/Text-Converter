@@ -7,13 +7,31 @@ function App() {
   const [tickets, setTickets] = useState([]);
   const [groupingOption, setGroupingOption] = useState('status');
   const [sortOption, setSortOption] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Fetch tickets from the API
   useEffect(() => {
-    fetch('https://api.quicksell.co/v1/internal/frontend-assignment')
-      .then(response => response.json())
-      .then(data => setTickets(data.tickets));
+    const fetchTickets = async () => {
+      try {
+        const response = await fetch('https://api.quicksell.co/v1/internal/frontend-assignment');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setTickets(data.tickets);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTickets();
   }, []);
+
+  if (loading) return <div>Loading tickets...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="app">
