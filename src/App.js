@@ -1,49 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import KanbanBoard from './components/KanbanBoard';
-import GroupSelector from './components/GroupSelector';
+import { useState } from 'react';
 import './App.css';
+import Alert from './components/Alert';
+import Navbar from './components/Navbar';
+import TextForm from './components/TextForm';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes
+} from "react-router-dom";
 
 function App() {
-  const [tickets, setTickets] = useState([]);
-  const [groupingOption, setGroupingOption] = useState('status');
-  const [sortOption, setSortOption] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [alert, setAlert] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
-  // Fetch tickets from the API
-  useEffect(() => {
-    const fetchTickets = async () => {
-      try {
-        const response = await fetch('https://api.quicksell.co/v1/internal/frontend-assignment');
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        setTickets(data.tickets);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type,
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  };
 
-    fetchTickets();
-  }, []);
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+    showAlert(`Dark mode ${!darkMode ? 'enabled' : 'disabled'}!`, "success");
+  };
 
-  if (loading) return <div>Loading tickets...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const appStyles = {
+    backgroundColor: darkMode ? "#333" : "white",
+    color: darkMode ? "white" : "black",
+    minHeight: "100vh",
+  };
 
   return (
-    <div className="app">
-      <h1>Kanban Board</h1>
-      <GroupSelector
-        groupingOption={groupingOption}
-        setGroupingOption={setGroupingOption}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
-      />
-      <KanbanBoard tickets={tickets} groupingOption={groupingOption} sortOption={sortOption} />
-    </div>
+    <Router>
+      <div style={appStyles}>
+        <Navbar title="Text Utility" toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
+        <Alert alert={alert} />
+        <div className='container my-3'>
+          <Routes>
+            <Route path="/" element={<TextForm showAlert={showAlert} heading="Enter the text to analyze" darkMode={darkMode} />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 
