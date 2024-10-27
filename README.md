@@ -20,9 +20,6 @@ A simple web application that allows users to convert text to uppercase or lower
 - **Dark Mode:**
   - Switches between light and dark themes.
 
-- **Background Color Change:**
-  - Change the background color of the app using navbar buttons.
-
 ## Technologies Used
 
 - React
