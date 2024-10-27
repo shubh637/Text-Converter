@@ -35,4 +35,4 @@ A simple web application that allows users to convert text to uppercase or lower
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/shubh637/frontend_project.git
